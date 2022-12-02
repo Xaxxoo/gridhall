@@ -1,0 +1,1770 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css"><link rel="stylesheet" href="css/L.Control.Locate.min.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet-measure.css">
+        <style>
+        #map {
+            width: 1620px;
+            height: 853px;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script><script src="js/L.Control.Locate.min.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet.wms.js"></script>
+        <script src="js/leaflet-measure.js"></script>
+        <script>
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        }).fitBounds([[9.064395664163563,7.37160013010681],[9.135887815735693,7.507527628630555]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        L.control.locate({locateOptions: {maxZoom: 19}}).addTo(map);
+        var measureControl = new L.Control.Measure({
+            position: 'topleft',
+            primaryLengthUnit: 'meters',
+            secondaryLengthUnit: 'kilometers',
+            primaryAreaUnit: 'sqmeters',
+            secondaryAreaUnit: 'hectares'
+        });
+        measureControl.addTo(map);
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .innerHTML = '';
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .className += ' fas fa-ruler';
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        map.createPane('pane_InternationalBoundary_0');
+        map.getPane('pane_InternationalBoundary_0').style.zIndex = 400;
+        var layer_InternationalBoundary_0 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:international_boundary", {
+            pane: 'pane_InternationalBoundary_0',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_InternationalBoundary_0);
+        map.createPane('pane_Water_Body_1');
+        map.getPane('pane_Water_Body_1').style.zIndex = 401;
+        var layer_Water_Body_1 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:water_body", {
+            pane: 'pane_Water_Body_1',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_Water_Body_1);
+        map.createPane('pane_veg_2');
+        map.getPane('pane_veg_2').style.zIndex = 402;
+        var layer_veg_2 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:veg", {
+            pane: 'pane_veg_2',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_veg_2);
+        map.createPane('pane_Rivers_3');
+        map.getPane('pane_Rivers_3').style.zIndex = 403;
+        var layer_Rivers_3 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:rivers", {
+            pane: 'pane_Rivers_3',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_Rivers_3);
+        map.createPane('pane_StateBoundary_4');
+        map.getPane('pane_StateBoundary_4').style.zIndex = 404;
+        var layer_StateBoundary_4 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:state_boundary", {
+            pane: 'pane_StateBoundary_4',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_StateBoundary_4);
+        map.createPane('pane_zamminorrd_5');
+        map.getPane('pane_zamminorrd_5').style.zIndex = 405;
+        var layer_zamminorrd_5 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:zam_minor_rd", {
+            pane: 'pane_zamminorrd_5',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_zamminorrd_5);
+        map.createPane('pane_zammajorrd_6');
+        map.getPane('pane_zammajorrd_6').style.zIndex = 406;
+        var layer_zammajorrd_6 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:zam_major_rd", {
+            pane: 'pane_zammajorrd_6',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_zammajorrd_6);
+        map.createPane('pane_zambuild_7');
+        map.getPane('pane_zambuild_7').style.zIndex = 407;
+        var layer_zambuild_7 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:zam_build", {
+            pane: 'pane_zambuild_7',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_zambuild_7);
+        map.createPane('pane_yobeminorrd_8');
+        map.getPane('pane_yobeminorrd_8').style.zIndex = 408;
+        var layer_yobeminorrd_8 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:yobe_minor_rd", {
+            pane: 'pane_yobeminorrd_8',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_yobeminorrd_8);
+        map.createPane('pane_yobemajorrd_9');
+        map.getPane('pane_yobemajorrd_9').style.zIndex = 409;
+        var layer_yobemajorrd_9 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:yobe_major_rd", {
+            pane: 'pane_yobemajorrd_9',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_yobemajorrd_9);
+        map.createPane('pane_yobebuild_10');
+        map.getPane('pane_yobebuild_10').style.zIndex = 410;
+        var layer_yobebuild_10 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:yobe_build", {
+            pane: 'pane_yobebuild_10',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_yobebuild_10);
+        map.createPane('pane_tarabaminorrd_11');
+        map.getPane('pane_tarabaminorrd_11').style.zIndex = 411;
+        var layer_tarabaminorrd_11 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:taraba_minor_rd", {
+            pane: 'pane_tarabaminorrd_11',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_tarabaminorrd_11);
+        map.createPane('pane_tarabamajorrd_12');
+        map.getPane('pane_tarabamajorrd_12').style.zIndex = 412;
+        var layer_tarabamajorrd_12 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:taraba_major_rd", {
+            pane: 'pane_tarabamajorrd_12',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_tarabamajorrd_12);
+        map.createPane('pane_TarabaBuild_13');
+        map.getPane('pane_TarabaBuild_13').style.zIndex = 413;
+        var layer_TarabaBuild_13 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:taraba_build", {
+            pane: 'pane_TarabaBuild_13',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_TarabaBuild_13);
+        map.createPane('pane_Sokotominorrd_14');
+        map.getPane('pane_Sokotominorrd_14').style.zIndex = 414;
+        var layer_Sokotominorrd_14 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:sokoto_minor_rd", {
+            pane: 'pane_Sokotominorrd_14',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_Sokotominorrd_14);
+        map.createPane('pane_sokotomajorrd_15');
+        map.getPane('pane_sokotomajorrd_15').style.zIndex = 415;
+        var layer_sokotomajorrd_15 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:sokoto_major_rd", {
+            pane: 'pane_sokotomajorrd_15',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_sokotomajorrd_15);
+        map.createPane('pane_sokotobuild_16');
+        map.getPane('pane_sokotobuild_16').style.zIndex = 416;
+        var layer_sokotobuild_16 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:sokoto_build", {
+            pane: 'pane_sokotobuild_16',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_sokotobuild_16);
+        map.createPane('pane_Riverminor_17');
+        map.getPane('pane_Riverminor_17').style.zIndex = 417;
+        var layer_Riverminor_17 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:river_minor", {
+            pane: 'pane_Riverminor_17',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_Riverminor_17);
+        map.createPane('pane_Rivermajor_18');
+        map.getPane('pane_Rivermajor_18').style.zIndex = 418;
+        var layer_Rivermajor_18 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:river_major", {
+            pane: 'pane_Rivermajor_18',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_Rivermajor_18);
+        map.createPane('pane_RiverBuild_19');
+        map.getPane('pane_RiverBuild_19').style.zIndex = 419;
+        var layer_RiverBuild_19 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:river_build", {
+            pane: 'pane_RiverBuild_19',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_RiverBuild_19);
+        map.createPane('pane_PlatMonorrd_20');
+        map.getPane('pane_PlatMonorrd_20').style.zIndex = 420;
+        var layer_PlatMonorrd_20 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:plat_monor_rd", {
+            pane: 'pane_PlatMonorrd_20',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_PlatMonorrd_20);
+        map.createPane('pane_PlatMajorrd_21');
+        map.getPane('pane_PlatMajorrd_21').style.zIndex = 421;
+        var layer_PlatMajorrd_21 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:plat_major_rd", {
+            pane: 'pane_PlatMajorrd_21',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_PlatMajorrd_21);
+        map.createPane('pane_platBuild_22');
+        map.getPane('pane_platBuild_22').style.zIndex = 422;
+        var layer_platBuild_22 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:plat_build", {
+            pane: 'pane_platBuild_22',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_platBuild_22);
+        map.createPane('pane_oyoMinorrd_23');
+        map.getPane('pane_oyoMinorrd_23').style.zIndex = 423;
+        var layer_oyoMinorrd_23 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:oyo_minor_rd", {
+            pane: 'pane_oyoMinorrd_23',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_oyoMinorrd_23);
+        map.createPane('pane_oyomajorrd_24');
+        map.getPane('pane_oyomajorrd_24').style.zIndex = 424;
+        var layer_oyomajorrd_24 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:oyo_major_rd", {
+            pane: 'pane_oyomajorrd_24',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_oyomajorrd_24);
+        map.createPane('pane_OyoBuild_25');
+        map.getPane('pane_OyoBuild_25').style.zIndex = 425;
+        var layer_OyoBuild_25 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:oyo_build", {
+            pane: 'pane_OyoBuild_25',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_OyoBuild_25);
+        map.createPane('pane_Ondominorrd_26');
+        map.getPane('pane_Ondominorrd_26').style.zIndex = 426;
+        var layer_Ondominorrd_26 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:ondo_minor_rd", {
+            pane: 'pane_Ondominorrd_26',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_Ondominorrd_26);
+        map.createPane('pane_OndoMajorrd_27');
+        map.getPane('pane_OndoMajorrd_27').style.zIndex = 427;
+        var layer_OndoMajorrd_27 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:ondo_major_rd", {
+            pane: 'pane_OndoMajorrd_27',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_OndoMajorrd_27);
+        map.createPane('pane_Ondobuild_28');
+        map.getPane('pane_Ondobuild_28').style.zIndex = 428;
+        var layer_Ondobuild_28 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:ondo_build", {
+            pane: 'pane_Ondobuild_28',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_Ondobuild_28);
+        map.createPane('pane_OgunMinorroad_29');
+        map.getPane('pane_OgunMinorroad_29').style.zIndex = 429;
+        var layer_OgunMinorroad_29 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:ogun_minor_road", {
+            pane: 'pane_OgunMinorroad_29',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_OgunMinorroad_29);
+        map.createPane('pane_ogunmajorroad_30');
+        map.getPane('pane_ogunmajorroad_30').style.zIndex = 430;
+        var layer_ogunmajorroad_30 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:ogun_major_road", {
+            pane: 'pane_ogunmajorroad_30',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_ogunmajorroad_30);
+        map.createPane('pane_OgunBuilding_31');
+        map.getPane('pane_OgunBuilding_31').style.zIndex = 431;
+        var layer_OgunBuilding_31 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:ogun_building", {
+            pane: 'pane_OgunBuilding_31',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_OgunBuilding_31);
+        map.createPane('pane_NigerwBuild_32');
+        map.getPane('pane_NigerwBuild_32').style.zIndex = 432;
+        var layer_NigerwBuild_32 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:niger_wbuild", {
+            pane: 'pane_NigerwBuild_32',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_NigerwBuild_32);
+        map.createPane('pane_Nigermajorroad_33');
+        map.getPane('pane_Nigermajorroad_33').style.zIndex = 433;
+        var layer_Nigermajorroad_33 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:niger_major_road", {
+            pane: 'pane_Nigermajorroad_33',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_Nigermajorroad_33);
+        map.createPane('pane_Nasminorroad_34');
+        map.getPane('pane_Nasminorroad_34').style.zIndex = 434;
+        var layer_Nasminorroad_34 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:nas_minor_road", {
+            pane: 'pane_Nasminorroad_34',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_Nasminorroad_34);
+        map.createPane('pane_Nasmajorroad_35');
+        map.getPane('pane_Nasmajorroad_35').style.zIndex = 435;
+        var layer_Nasmajorroad_35 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:nas_major_road", {
+            pane: 'pane_Nasmajorroad_35',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_Nasmajorroad_35);
+        map.createPane('pane_Nasbuild_36');
+        map.getPane('pane_Nasbuild_36').style.zIndex = 436;
+        var layer_Nasbuild_36 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:nas_build", {
+            pane: 'pane_Nasbuild_36',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_Nasbuild_36);
+        map.createPane('pane_LagosMinorRoad_37');
+        map.getPane('pane_LagosMinorRoad_37').style.zIndex = 437;
+        var layer_LagosMinorRoad_37 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:lagos_minor_road", {
+            pane: 'pane_LagosMinorRoad_37',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_LagosMinorRoad_37);
+        map.createPane('pane_LagosMajorRoad_38');
+        map.getPane('pane_LagosMajorRoad_38').style.zIndex = 438;
+        var layer_LagosMajorRoad_38 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:lagos_major_road", {
+            pane: 'pane_LagosMajorRoad_38',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_LagosMajorRoad_38);
+        map.createPane('pane_Lagosbuild_39');
+        map.getPane('pane_Lagosbuild_39').style.zIndex = 439;
+        var layer_Lagosbuild_39 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:lagos_build", {
+            pane: 'pane_Lagosbuild_39',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_Lagosbuild_39);
+        map.createPane('pane_Kwaraminorroad_40');
+        map.getPane('pane_Kwaraminorroad_40').style.zIndex = 440;
+        var layer_Kwaraminorroad_40 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:kwara_minor_road", {
+            pane: 'pane_Kwaraminorroad_40',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_Kwaraminorroad_40);
+        map.createPane('pane_Kwaramajorroad_41');
+        map.getPane('pane_Kwaramajorroad_41').style.zIndex = 441;
+        var layer_Kwaramajorroad_41 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:kwara_major_road", {
+            pane: 'pane_Kwaramajorroad_41',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_Kwaramajorroad_41);
+        map.createPane('pane_Kwarabuilding_42');
+        map.getPane('pane_Kwarabuilding_42').style.zIndex = 442;
+        var layer_Kwarabuilding_42 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:kwara_building", {
+            pane: 'pane_Kwarabuilding_42',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_Kwarabuilding_42);
+        map.createPane('pane_Kogiminorroad_43');
+        map.getPane('pane_Kogiminorroad_43').style.zIndex = 443;
+        var layer_Kogiminorroad_43 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:kogi_minor_road", {
+            pane: 'pane_Kogiminorroad_43',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_Kogiminorroad_43);
+        map.createPane('pane_Kogimajorroad_44');
+        map.getPane('pane_Kogimajorroad_44').style.zIndex = 444;
+        var layer_Kogimajorroad_44 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:kogi_major_road", {
+            pane: 'pane_Kogimajorroad_44',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_Kogimajorroad_44);
+        map.createPane('pane_Kogibuilding_45');
+        map.getPane('pane_Kogibuilding_45').style.zIndex = 445;
+        var layer_Kogibuilding_45 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:kogi_building", {
+            pane: 'pane_Kogibuilding_45',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_Kogibuilding_45);
+        map.createPane('pane_KebbiMinorrroad_46');
+        map.getPane('pane_KebbiMinorrroad_46').style.zIndex = 446;
+        var layer_KebbiMinorrroad_46 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:kebbi_minorr_road", {
+            pane: 'pane_KebbiMinorrroad_46',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_KebbiMinorrroad_46);
+        map.createPane('pane_KebbiMajorroad_47');
+        map.getPane('pane_KebbiMajorroad_47').style.zIndex = 447;
+        var layer_KebbiMajorroad_47 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:kebbi_major_road", {
+            pane: 'pane_KebbiMajorroad_47',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_KebbiMajorroad_47);
+        map.createPane('pane_KebbiBuilding_48');
+        map.getPane('pane_KebbiBuilding_48').style.zIndex = 448;
+        var layer_KebbiBuilding_48 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:kebbi_building", {
+            pane: 'pane_KebbiBuilding_48',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_KebbiBuilding_48);
+        map.createPane('pane_KadunaMinorRoad_49');
+        map.getPane('pane_KadunaMinorRoad_49').style.zIndex = 449;
+        var layer_KadunaMinorRoad_49 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:kaduna_minor_road", {
+            pane: 'pane_KadunaMinorRoad_49',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_KadunaMinorRoad_49);
+        map.createPane('pane_KadunaMajorRoad_50');
+        map.getPane('pane_KadunaMajorRoad_50').style.zIndex = 450;
+        var layer_KadunaMajorRoad_50 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:kaduna_major_road", {
+            pane: 'pane_KadunaMajorRoad_50',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_KadunaMajorRoad_50);
+        map.createPane('pane_KDbuild_51');
+        map.getPane('pane_KDbuild_51').style.zIndex = 451;
+        var layer_KDbuild_51 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:kd_build", {
+            pane: 'pane_KDbuild_51',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_KDbuild_51);
+        map.createPane('pane_KatsinaminorRoad_52');
+        map.getPane('pane_KatsinaminorRoad_52').style.zIndex = 452;
+        var layer_KatsinaminorRoad_52 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:katsina_minor_road", {
+            pane: 'pane_KatsinaminorRoad_52',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_KatsinaminorRoad_52);
+        map.createPane('pane_KatsinamajorRoad_53');
+        map.getPane('pane_KatsinamajorRoad_53').style.zIndex = 453;
+        var layer_KatsinamajorRoad_53 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:katsina_major_road", {
+            pane: 'pane_KatsinamajorRoad_53',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_KatsinamajorRoad_53);
+        map.createPane('pane_KatsinaBuilding_54');
+        map.getPane('pane_KatsinaBuilding_54').style.zIndex = 454;
+        var layer_KatsinaBuilding_54 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:katsina_building", {
+            pane: 'pane_KatsinaBuilding_54',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_KatsinaBuilding_54);
+        map.createPane('pane_Kanominor_55');
+        map.getPane('pane_Kanominor_55').style.zIndex = 455;
+        var layer_Kanominor_55 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:kano_minor", {
+            pane: 'pane_Kanominor_55',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_Kanominor_55);
+        map.createPane('pane_Kanomajor_56');
+        map.getPane('pane_Kanomajor_56').style.zIndex = 456;
+        var layer_Kanomajor_56 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:kano_major", {
+            pane: 'pane_Kanomajor_56',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_Kanomajor_56);
+        map.createPane('pane_KanoBuild_57');
+        map.getPane('pane_KanoBuild_57').style.zIndex = 457;
+        var layer_KanoBuild_57 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:kano_build", {
+            pane: 'pane_KanoBuild_57',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_KanoBuild_57);
+        map.createPane('pane_fctMinorRoad_58');
+        map.getPane('pane_fctMinorRoad_58').style.zIndex = 458;
+        var layer_fctMinorRoad_58 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:fct_minor_road", {
+            pane: 'pane_fctMinorRoad_58',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_fctMinorRoad_58);
+        map.createPane('pane_kach_minor_59');
+        map.getPane('pane_kach_minor_59').style.zIndex = 459;
+        var layer_kach_minor_59 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:kach_minor", {
+            pane: 'pane_kach_minor_59',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_kach_minor_59);
+        map.createPane('pane_kachBuild_60');
+        map.getPane('pane_kachBuild_60').style.zIndex = 460;
+        var layer_kachBuild_60 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:kach_build", {
+            pane: 'pane_kachBuild_60',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_kachBuild_60);
+        map.createPane('pane_JigawaMinorRoad_61');
+        map.getPane('pane_JigawaMinorRoad_61').style.zIndex = 461;
+        var layer_JigawaMinorRoad_61 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:jigawa_minor_road", {
+            pane: 'pane_JigawaMinorRoad_61',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_JigawaMinorRoad_61);
+        map.createPane('pane_JigawaMajorRoad_62');
+        map.getPane('pane_JigawaMajorRoad_62').style.zIndex = 462;
+        var layer_JigawaMajorRoad_62 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:jigawa_major_road", {
+            pane: 'pane_JigawaMajorRoad_62',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_JigawaMajorRoad_62);
+        map.createPane('pane_JigawaBuilding_63');
+        map.getPane('pane_JigawaBuilding_63').style.zIndex = 463;
+        var layer_JigawaBuilding_63 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:jigawa_building", {
+            pane: 'pane_JigawaBuilding_63',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_JigawaBuilding_63);
+        map.createPane('pane_ImoMinorRoad_64');
+        map.getPane('pane_ImoMinorRoad_64').style.zIndex = 464;
+        var layer_ImoMinorRoad_64 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:imo_minor_road", {
+            pane: 'pane_ImoMinorRoad_64',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_ImoMinorRoad_64);
+        map.createPane('pane_ImoMajorRoad_65');
+        map.getPane('pane_ImoMajorRoad_65').style.zIndex = 465;
+        var layer_ImoMajorRoad_65 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:imo_major_road", {
+            pane: 'pane_ImoMajorRoad_65',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_ImoMajorRoad_65);
+        map.createPane('pane_ImoBuilding_66');
+        map.getPane('pane_ImoBuilding_66').style.zIndex = 466;
+        var layer_ImoBuilding_66 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:imo_building", {
+            pane: 'pane_ImoBuilding_66',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_ImoBuilding_66);
+        map.createPane('pane_GombeMinorRoad_67');
+        map.getPane('pane_GombeMinorRoad_67').style.zIndex = 467;
+        var layer_GombeMinorRoad_67 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:gombe_minor_road", {
+            pane: 'pane_GombeMinorRoad_67',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_GombeMinorRoad_67);
+        map.createPane('pane_GombeBuilding_68');
+        map.getPane('pane_GombeBuilding_68').style.zIndex = 468;
+        var layer_GombeBuilding_68 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:gombe_building", {
+            pane: 'pane_GombeBuilding_68',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_GombeBuilding_68);
+        map.createPane('pane_fctMajorRoad_69');
+        map.getPane('pane_fctMajorRoad_69').style.zIndex = 469;
+        var layer_fctMajorRoad_69 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:fct_major__road", {
+            pane: 'pane_fctMajorRoad_69',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_fctMajorRoad_69);
+        map.createPane('pane_fctbuild_70');
+        map.getPane('pane_fctbuild_70').style.zIndex = 470;
+        var layer_fctbuild_70 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:fct_build", {
+            pane: 'pane_fctbuild_70',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_fctbuild_70);
+        map.createPane('pane_EnuguMinorRoad_71');
+        map.getPane('pane_EnuguMinorRoad_71').style.zIndex = 471;
+        var layer_EnuguMinorRoad_71 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:enugu_minor_road", {
+            pane: 'pane_EnuguMinorRoad_71',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_EnuguMinorRoad_71);
+        map.createPane('pane_EnuguMajorRoad_72');
+        map.getPane('pane_EnuguMajorRoad_72').style.zIndex = 472;
+        var layer_EnuguMajorRoad_72 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:enugu_major_road", {
+            pane: 'pane_EnuguMajorRoad_72',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_EnuguMajorRoad_72);
+        map.createPane('pane_EnuguBuilding_73');
+        map.getPane('pane_EnuguBuilding_73').style.zIndex = 473;
+        var layer_EnuguBuilding_73 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:enugu_building", {
+            pane: 'pane_EnuguBuilding_73',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_EnuguBuilding_73);
+        map.createPane('pane_EkitiiMinorRoad_74');
+        map.getPane('pane_EkitiiMinorRoad_74').style.zIndex = 474;
+        var layer_EkitiiMinorRoad_74 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:ekitii_minor_road", {
+            pane: 'pane_EkitiiMinorRoad_74',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_EkitiiMinorRoad_74);
+        map.createPane('pane_EkitiiMajorRoad_75');
+        map.getPane('pane_EkitiiMajorRoad_75').style.zIndex = 475;
+        var layer_EkitiiMajorRoad_75 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:ekitii_major_road", {
+            pane: 'pane_EkitiiMajorRoad_75',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_EkitiiMajorRoad_75);
+        map.createPane('pane_EkitiiBuilding_76');
+        map.getPane('pane_EkitiiBuilding_76').style.zIndex = 476;
+        var layer_EkitiiBuilding_76 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:ekitii_building", {
+            pane: 'pane_EkitiiBuilding_76',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_EkitiiBuilding_76);
+        map.createPane('pane_Edominor_77');
+        map.getPane('pane_Edominor_77').style.zIndex = 477;
+        var layer_Edominor_77 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:edo_minor", {
+            pane: 'pane_Edominor_77',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_Edominor_77);
+        map.createPane('pane_EdoMajor_78');
+        map.getPane('pane_EdoMajor_78').style.zIndex = 478;
+        var layer_EdoMajor_78 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:edo_major", {
+            pane: 'pane_EdoMajor_78',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_EdoMajor_78);
+        map.createPane('pane_EdoBuild_79');
+        map.getPane('pane_EdoBuild_79').style.zIndex = 479;
+        var layer_EdoBuild_79 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:edo_build", {
+            pane: 'pane_EdoBuild_79',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_EdoBuild_79);
+        map.createPane('pane_EbonyiMinorRoad_80');
+        map.getPane('pane_EbonyiMinorRoad_80').style.zIndex = 480;
+        var layer_EbonyiMinorRoad_80 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:ebonyi_minor_road", {
+            pane: 'pane_EbonyiMinorRoad_80',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_EbonyiMinorRoad_80);
+        map.createPane('pane_EbonyiMajorRoad_81');
+        map.getPane('pane_EbonyiMajorRoad_81').style.zIndex = 481;
+        var layer_EbonyiMajorRoad_81 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:ebonyi_major_road", {
+            pane: 'pane_EbonyiMajorRoad_81',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_EbonyiMajorRoad_81);
+        map.createPane('pane_EbonyiBuilding_82');
+        map.getPane('pane_EbonyiBuilding_82').style.zIndex = 482;
+        var layer_EbonyiBuilding_82 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:ebonyi_building", {
+            pane: 'pane_EbonyiBuilding_82',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_EbonyiBuilding_82);
+        map.createPane('pane_DeltaMinorRoad_83');
+        map.getPane('pane_DeltaMinorRoad_83').style.zIndex = 483;
+        var layer_DeltaMinorRoad_83 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:delta_minor_road", {
+            pane: 'pane_DeltaMinorRoad_83',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_DeltaMinorRoad_83);
+        map.createPane('pane_DeltaMajorRoad_84');
+        map.getPane('pane_DeltaMajorRoad_84').style.zIndex = 484;
+        var layer_DeltaMajorRoad_84 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:delta_major_road", {
+            pane: 'pane_DeltaMajorRoad_84',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_DeltaMajorRoad_84);
+        map.createPane('pane_DeltaBuilding_85');
+        map.getPane('pane_DeltaBuilding_85').style.zIndex = 485;
+        var layer_DeltaBuilding_85 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:delta_building_", {
+            pane: 'pane_DeltaBuilding_85',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_DeltaBuilding_85);
+        map.createPane('pane_CriverMinorRoad_86');
+        map.getPane('pane_CriverMinorRoad_86').style.zIndex = 486;
+        var layer_CriverMinorRoad_86 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:criver_minor_road", {
+            pane: 'pane_CriverMinorRoad_86',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_CriverMinorRoad_86);
+        map.createPane('pane_CriverMajorRoad_87');
+        map.getPane('pane_CriverMajorRoad_87').style.zIndex = 487;
+        var layer_CriverMajorRoad_87 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:criver_major_road", {
+            pane: 'pane_CriverMajorRoad_87',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_CriverMajorRoad_87);
+        map.createPane('pane_CriverBuilding_88');
+        map.getPane('pane_CriverBuilding_88').style.zIndex = 488;
+        var layer_CriverBuilding_88 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:criver_building", {
+            pane: 'pane_CriverBuilding_88',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_CriverBuilding_88);
+        map.createPane('pane_BornoMinorRoad_89');
+        map.getPane('pane_BornoMinorRoad_89').style.zIndex = 489;
+        var layer_BornoMinorRoad_89 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:borno_minor_road", {
+            pane: 'pane_BornoMinorRoad_89',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_BornoMinorRoad_89);
+        map.createPane('pane_BornoMajorRoad_90');
+        map.getPane('pane_BornoMajorRoad_90').style.zIndex = 490;
+        var layer_BornoMajorRoad_90 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:borno_major_road", {
+            pane: 'pane_BornoMajorRoad_90',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_BornoMajorRoad_90);
+        map.createPane('pane_BornoBuilding_91');
+        map.getPane('pane_BornoBuilding_91').style.zIndex = 491;
+        var layer_BornoBuilding_91 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:borno_building", {
+            pane: 'pane_BornoBuilding_91',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_BornoBuilding_91);
+        map.createPane('pane_BenueMinorRoad_92');
+        map.getPane('pane_BenueMinorRoad_92').style.zIndex = 492;
+        var layer_BenueMinorRoad_92 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:benue_minor_road", {
+            pane: 'pane_BenueMinorRoad_92',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_BenueMinorRoad_92);
+        map.createPane('pane_BenueMajorRoad_93');
+        map.getPane('pane_BenueMajorRoad_93').style.zIndex = 493;
+        var layer_BenueMajorRoad_93 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:benue_major_road", {
+            pane: 'pane_BenueMajorRoad_93',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_BenueMajorRoad_93);
+        map.createPane('pane_BenueBuilding_94');
+        map.getPane('pane_BenueBuilding_94').style.zIndex = 494;
+        var layer_BenueBuilding_94 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:benue_building", {
+            pane: 'pane_BenueBuilding_94',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_BenueBuilding_94);
+        map.createPane('pane_BayelsaMinorRoad_95');
+        map.getPane('pane_BayelsaMinorRoad_95').style.zIndex = 495;
+        var layer_BayelsaMinorRoad_95 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:bayelsa_minor_road", {
+            pane: 'pane_BayelsaMinorRoad_95',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_BayelsaMinorRoad_95);
+        map.createPane('pane_BayelsaMajorRoad_96');
+        map.getPane('pane_BayelsaMajorRoad_96').style.zIndex = 496;
+        var layer_BayelsaMajorRoad_96 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:bayelsa_major_road", {
+            pane: 'pane_BayelsaMajorRoad_96',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_BayelsaMajorRoad_96);
+        map.createPane('pane_BayelsaBuilding_97');
+        map.getPane('pane_BayelsaBuilding_97').style.zIndex = 497;
+        var layer_BayelsaBuilding_97 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:bayelsa_building", {
+            pane: 'pane_BayelsaBuilding_97',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_BayelsaBuilding_97);
+        map.createPane('pane_BauchiMinorRoad_98');
+        map.getPane('pane_BauchiMinorRoad_98').style.zIndex = 498;
+        var layer_BauchiMinorRoad_98 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:bauchi_minor_road", {
+            pane: 'pane_BauchiMinorRoad_98',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_BauchiMinorRoad_98);
+        map.createPane('pane_BauchiMajorRoad_99');
+        map.getPane('pane_BauchiMajorRoad_99').style.zIndex = 499;
+        var layer_BauchiMajorRoad_99 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:bauchi_major_road", {
+            pane: 'pane_BauchiMajorRoad_99',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_BauchiMajorRoad_99);
+        map.createPane('pane_BauchiBullding_100');
+        map.getPane('pane_BauchiBullding_100').style.zIndex = 500;
+        var layer_BauchiBullding_100 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:bauchi_bullding", {
+            pane: 'pane_BauchiBullding_100',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_BauchiBullding_100);
+        map.createPane('pane_AnambraMinorRoad_101');
+        map.getPane('pane_AnambraMinorRoad_101').style.zIndex = 501;
+        var layer_AnambraMinorRoad_101 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:anambra_minorroad", {
+            pane: 'pane_AnambraMinorRoad_101',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_AnambraMinorRoad_101);
+        map.createPane('pane_AnambraMajorRoad_102');
+        map.getPane('pane_AnambraMajorRoad_102').style.zIndex = 502;
+        var layer_AnambraMajorRoad_102 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:anambra_majorroad", {
+            pane: 'pane_AnambraMajorRoad_102',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_AnambraMajorRoad_102);
+        map.createPane('pane_AnambraBuilding_103');
+        map.getPane('pane_AnambraBuilding_103').style.zIndex = 503;
+        var layer_AnambraBuilding_103 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:anambra_building", {
+            pane: 'pane_AnambraBuilding_103',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_AnambraBuilding_103);
+        map.createPane('pane_AkwaibomMinorRoad_104');
+        map.getPane('pane_AkwaibomMinorRoad_104').style.zIndex = 504;
+        var layer_AkwaibomMinorRoad_104 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:akwa_ibom_minorroad", {
+            pane: 'pane_AkwaibomMinorRoad_104',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_AkwaibomMinorRoad_104);
+        map.createPane('pane_AkwaibomMajorRoad_105');
+        map.getPane('pane_AkwaibomMajorRoad_105').style.zIndex = 505;
+        var layer_AkwaibomMajorRoad_105 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:akwa_ibom_majorroad", {
+            pane: 'pane_AkwaibomMajorRoad_105',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_AkwaibomMajorRoad_105);
+        map.createPane('pane_AkwaibomBuilding_106');
+        map.getPane('pane_AkwaibomBuilding_106').style.zIndex = 506;
+        var layer_AkwaibomBuilding_106 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:akwa_ibom_building", {
+            pane: 'pane_AkwaibomBuilding_106',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_AkwaibomBuilding_106);
+        map.createPane('pane_AdamawaaMinorRoad_107');
+        map.getPane('pane_AdamawaaMinorRoad_107').style.zIndex = 507;
+        var layer_AdamawaaMinorRoad_107 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:adamawaa_minorroad", {
+            pane: 'pane_AdamawaaMinorRoad_107',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_AdamawaaMinorRoad_107);
+        map.createPane('pane_AdamawaMajorRoad_108');
+        map.getPane('pane_AdamawaMajorRoad_108').style.zIndex = 508;
+        var layer_AdamawaMajorRoad_108 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:adamawa_majorroad", {
+            pane: 'pane_AdamawaMajorRoad_108',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_AdamawaMajorRoad_108);
+        map.createPane('pane_AdamawaaBuilding_109');
+        map.getPane('pane_AdamawaaBuilding_109').style.zIndex = 509;
+        var layer_AdamawaaBuilding_109 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:adamawaa_building", {
+            pane: 'pane_AdamawaaBuilding_109',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_AdamawaaBuilding_109);
+        map.createPane('pane_AbiaMinorRoad_110');
+        map.getPane('pane_AbiaMinorRoad_110').style.zIndex = 510;
+        var layer_AbiaMinorRoad_110 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:abia_minorroad", {
+            pane: 'pane_AbiaMinorRoad_110',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_AbiaMinorRoad_110);
+        map.createPane('pane_AbiaMajorRoad_111');
+        map.getPane('pane_AbiaMajorRoad_111').style.zIndex = 511;
+        var layer_AbiaMajorRoad_111 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:abia_majorroad", {
+            pane: 'pane_AbiaMajorRoad_111',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_AbiaMajorRoad_111);
+        map.createPane('pane_AbiaBuilding_112');
+        map.getPane('pane_AbiaBuilding_112').style.zIndex = 512;
+        var layer_AbiaBuilding_112 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:abia_building", {
+            pane: 'pane_AbiaBuilding_112',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_AbiaBuilding_112);
+        map.createPane('pane_Highwaynew_113');
+        map.getPane('pane_Highwaynew_113').style.zIndex = 513;
+        var layer_Highwaynew_113 = L.WMS.layer("http://localhost:8080/geoserver/wms", "nigeria:highway", {
+            pane: 'pane_Highwaynew_113',
+            format: 'image/png',
+            uppercase: true,
+            transparent: true,
+            continuousWorld : true,
+            tiled: true,
+            info_format: 'text/html',
+            opacity: 1,
+            identify: false,
+            attribution: '',
+        });
+        map.addLayer(layer_Highwaynew_113);
+        setBounds();
+        </script>
+    </body>
+</html>
